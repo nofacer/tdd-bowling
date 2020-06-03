@@ -14,8 +14,21 @@ public class BowlingGame {
     this.turnRecord.put(turnNumber, turn);
   }
 
-  public int cal_score(int turnNumber) {
-    Turn turn=turnRecord.get(turnNumber);
-    return turn.getGoalList().stream().mapToInt(Integer::intValue).sum();
+  public int calScore(int turnNumber) {
+    Turn turn = turnRecord.get(turnNumber);
+    int temporaryScore = sumList(turn.getGoalList());
+    if ((temporaryScore) == 10) {
+      return temporaryScore + calSpareBonusScore(turnNumber);
+    }
+    return temporaryScore;
+  }
+
+  private int calSpareBonusScore(int turnNumber) {
+    return this.turnRecord.get(turnNumber + 1).getGoalList().get(0);
+  }
+
+
+  private int sumList(List<Integer> lyst) {
+    return lyst.stream().mapToInt(Integer::intValue).sum();
   }
 }
