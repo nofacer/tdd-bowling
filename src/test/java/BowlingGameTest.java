@@ -45,12 +45,16 @@ class BowlingGameTest {
     assertEquals(20, score);
   }
 
-  @Test
-  void should_the_score_be_total_number_bowls_struck_down_plus_next_two_throws_score_when_calculate_turn_score_given_not_10th_turn_and_strike_turn_case1() {
+  @ParameterizedTest
+  @CsvSource({"10,0,10,0,10,0,30", "10,0,2,8,10,0,20", "10,0,10,0,8,0,28"})
+  void should_the_score_be_total_number_bowls_struck_down_plus_next_two_throws_score_when_calculate_turn_score_given_not_10th_turn_and_strike_turn_case1(
+      int firstTurnFirstGoal, int firstTurnSecondGoal, int secondTurnFirstGoal,
+      int secondTurnSecondGoal, int thirdTurnFirstGoal, int thirdTurnSecondGoal, int exceptedScore
+  ) {
     //given
-    Turn firstTurn = new Turn(Arrays.asList(10, 0));
-    Turn secondTurn = new Turn(Arrays.asList(10, 0));
-    Turn thirdTurn = new Turn(Arrays.asList(10, 0));
+    Turn firstTurn = new Turn(Arrays.asList(firstTurnFirstGoal, firstTurnSecondGoal));
+    Turn secondTurn = new Turn(Arrays.asList(secondTurnFirstGoal, secondTurnSecondGoal));
+    Turn thirdTurn = new Turn(Arrays.asList(thirdTurnFirstGoal, thirdTurnSecondGoal));
     bowlingGame.recordGoalStatus(1, firstTurn);
     bowlingGame.recordGoalStatus(2, secondTurn);
     bowlingGame.recordGoalStatus(3, thirdTurn);
@@ -59,29 +63,12 @@ class BowlingGameTest {
     int score = bowlingGame.calScore(1);
 
     //then
-    assertEquals(30, score);
-  }
-
-  @Test
-  void should_the_score_be_total_number_bowls_struck_down_plus_next_two_throws_score_when_calculate_turn_score_given_not_10th_turn_and_strike_turn_case2() {
-    //given
-    Turn firstTurn = new Turn(Arrays.asList(10, 0));
-    Turn secondTurn = new Turn(Arrays.asList(2, 8));
-    Turn thirdTurn = new Turn(Arrays.asList(10, 0));
-    bowlingGame.recordGoalStatus(1, firstTurn);
-    bowlingGame.recordGoalStatus(2, secondTurn);
-    bowlingGame.recordGoalStatus(3, thirdTurn);
-
-    //when
-    int score = bowlingGame.calScore(1);
-
-    //then
-    assertEquals(20, score);
+    assertEquals(exceptedScore, score);
   }
 
   @ParameterizedTest
   @CsvSource({"0, 0, 0, 0", "10, 10, 10, 30", "10, 2, 8, 20", "2, 8, 0, 10"})
-  void should_the_score_be_total_number_bowls_struck_down__when_calculate_turn_score_given_is_10th_turn(
+  void should_the_score_be_total_number_bowls_struck_down_when_calculate_turn_score_given_is_10th_turn(
       int firstThrow, int secondThrow, int thirdThrow, int exceptedScore) {
     //given
     Turn tenthTurn = new Turn(Arrays.asList(firstThrow, secondThrow, thirdThrow));

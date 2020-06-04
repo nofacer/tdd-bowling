@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class BowlingGame {
 
-  private Map<Integer, Turn> turnRecord;
+  private final Map<Integer, Turn> turnRecord;
 
   public BowlingGame() {
     this.turnRecord = new HashMap<>();
@@ -18,14 +18,14 @@ public class BowlingGame {
   public int calScore(int turnNumber) {
     Turn turn = turnRecord.get(turnNumber);
     int temporaryScore = sumList(turn.getGoalList());
-    if (turnNumber == 10) {
-      return temporaryScore;
-    }
-    if ((temporaryScore) == 10 && turn.getGoalList().get(0) != 10) {
-      return temporaryScore + calSpareBonusScore(turnNumber);
-    }
-    if (turn.getGoalList().get(0) == 10) {
-      return temporaryScore + calStrikeBonusScore(turnNumber);
+
+    if (turnNumber != 10) {
+      if ((temporaryScore) == 10 && turn.getGoalList().get(0) != 10) {
+        return temporaryScore + calSpareBonusScore(turnNumber);
+      }
+      if (turn.getGoalList().get(0) == 10) {
+        return temporaryScore + calStrikeBonusScore(turnNumber);
+      }
     }
     return temporaryScore;
   }
@@ -36,9 +36,9 @@ public class BowlingGame {
 
   private int calStrikeBonusScore(int turnNumber) {
     List<Integer> bonusGoalList = new ArrayList<>();
-
-    for (int i = turnNumber + 1; i <= 10; i++) {
-      List<Integer> goalList = this.turnRecord.get(turnNumber + 1).getGoalList();
+    int tempTurnNumber = turnNumber + 1;
+    while (bonusGoalList.size() < 2) {
+      List<Integer> goalList = this.turnRecord.get(tempTurnNumber).getGoalList();
       for (int goal : goalList) {
         if (goal != 0) {
           bonusGoalList.add(goal);
@@ -47,9 +47,7 @@ public class BowlingGame {
           }
         }
       }
-      if (bonusGoalList.size() >= 2) {
-        break;
-      }
+      tempTurnNumber++;
     }
     return sumList(bonusGoalList);
   }
