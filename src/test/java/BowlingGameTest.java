@@ -80,4 +80,19 @@ class BowlingGameTest {
     //then
     assertEquals(exceptedScore, score);
   }
+
+  @Test
+  void should_the_total_score_be_300_when_calculate_total_score_of_one_game_given_every_throw_strikes_down_all_bowls() {
+    //given
+    for (int i = 1; i <= 9; i++) {
+      bowlingGame.recordGoalStatus(i, new Turn(Arrays.asList(10, 0)));
+    }
+    bowlingGame.recordGoalStatus(10, new Turn(Arrays.asList(10, 10, 10)));
+
+    //when
+    int finalScore=bowlingGame.calFinalScore();
+
+    //then
+    assertEquals(300, finalScore);
+  }
 }

@@ -30,6 +30,14 @@ public class BowlingGame {
     return temporaryScore;
   }
 
+  public int calFinalScore() {
+    int sum = 0;
+    for (int i = 1; i <= 10; i++) {
+      sum += calScore(i);
+    }
+    return sum;
+  }
+
   private int calSpareBonusScore(int turnNumber) {
     return this.turnRecord.get(turnNumber + 1).getGoalList().get(0);
   }
