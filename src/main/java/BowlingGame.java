@@ -18,6 +18,9 @@ public class BowlingGame {
   public int calScore(int turnNumber) {
     Turn turn = turnRecord.get(turnNumber);
     int temporaryScore = sumList(turn.getGoalList());
+    if (turnNumber == 10) {
+      return temporaryScore;
+    }
     if ((temporaryScore) == 10 && turn.getGoalList().get(0) != 10) {
       return temporaryScore + calSpareBonusScore(turnNumber);
     }

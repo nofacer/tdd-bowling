@@ -78,4 +78,19 @@ class BowlingGameTest {
     //then
     assertEquals(20, score);
   }
+
+  @ParameterizedTest
+  @CsvSource({"0, 0, 0, 0", "10, 10, 10, 30", "10, 2, 8, 20", "2, 8, 0, 10"})
+  void should_the_score_be_total_number_bowls_struck_down__when_calculate_turn_score_given_is_10th_turn(
+      int firstThrow, int secondThrow, int thirdThrow, int exceptedScore) {
+    //given
+    Turn tenthTurn = new Turn(Arrays.asList(firstThrow, secondThrow, thirdThrow));
+    bowlingGame.recordGoalStatus(10, tenthTurn);
+
+    //when
+    int score = bowlingGame.calScore(10);
+
+    //then
+    assertEquals(exceptedScore, score);
+  }
 }
